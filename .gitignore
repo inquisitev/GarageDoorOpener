@@ -3,3 +3,4 @@ tempdb.json
 *.pyc
 enc.key
 /garage
+*/node_modules
