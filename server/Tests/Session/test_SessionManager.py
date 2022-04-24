@@ -67,7 +67,7 @@ def test_privilages():
     assert sm is not None
 
     # Can make a new first user.
-    assert sm.new_user(*good_user)
+    token = sm.new_user(*good_user)
 
     # Can make another user
     assert sm.new_user(*unverified_user)
@@ -77,6 +77,12 @@ def test_privilages():
     assert sm.resident_privilage(sm.get_token(good_user[0], good_user[2]))
     assert sm.visitor_privilage(sm.get_token(good_user[0], good_user[2]))
     assert sm.unverified_privilage(sm.get_token(good_user[0], good_user[2]))
+
+
+    assert sm.owner_privilage(token)
+    assert sm.resident_privilage(token)
+    assert sm.visitor_privilage(token)
+    assert sm.unverified_privilage(token)
 
     # second user is unverified. they have minimal privilages
     assert not sm.owner_privilage(sm.get_token(unverified_user[0], unverified_user[2]))
