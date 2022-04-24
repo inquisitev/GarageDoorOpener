@@ -41,14 +41,14 @@ class SessionManager:
     def __init__(self, db_path):
         self.db = TinyDB(db_path)
 
-    def encrypted_password(self, password):
+    def _encrypted_password(self, password):
         return Fernet(key).encrypt(password.encode())
 
-    def decrypted_password(self, encrypted_password):
+    def _decrypted_password(self, encrypted_password):
         enc = Fernet(key).decrypt(encrypted_password)
         return enc
 
-    def make_token(self):
+    def _make_token(self):
         token = uuid4().hex
         return token
 
@@ -72,9 +72,9 @@ class SessionManager:
             raise AuthenticationException(ACCOUNT_EXISTS_MESSAGE)
 
         new_entry = {
-            TOKEN_KEY: self.make_token(), 
+            TOKEN_KEY: self._make_token(), 
             USER_NAME_KEY: user_name,
-            PASSWORD_HASH_KEY: self.encrypted_password(password_plain).decode(),
+            PASSWORD_HASH_KEY: self._encrypted_password(password_plain).decode(),
             PRIVILAGE_KEY: priv,
             EMAIL_KEY: email
             }
@@ -88,7 +88,7 @@ class SessionManager:
 
         if result:
             hashed_password = result[0][PASSWORD_HASH_KEY].encode()
-            decrypted_password = self.decrypted_password(hashed_password).decode()
+            decrypted_password = self._decrypted_password(hashed_password).decode()
 
             if decrypted_password == password_plain:
                 return result[0][TOKEN_KEY]

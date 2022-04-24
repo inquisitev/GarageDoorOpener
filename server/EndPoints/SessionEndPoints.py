@@ -15,8 +15,12 @@ def make_end_points(app, session_manager):
 
     @app.route('/login', methods=['POST'])
     def login(): 
-        return json.dumps({'name': 'alice',
-                        'email': 'alice@outlook.com'})
+        data = json.loads(request.data)
+        try:
+            token = session_manager.get_token(data['user'], data['password_plain'])
+            return json.dumps({'token': token}), 200
+        except AuthenticationException as e:
+            return json.dumps({'error': e.args[0]}),401
 
     @app.route('/forgotpass')
     def forgotpass():
