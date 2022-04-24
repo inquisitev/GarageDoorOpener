@@ -1,0 +1,4 @@
+tinydb
+cryptography
+flask
+pytest

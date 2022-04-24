@@ -16,7 +16,8 @@ unverified_user = [
 ]
 
 def test_new_user():
-    os.remove('./tempdb.json')
+    if os.path.exists('./tempdb.json'):
+        os.remove('./tempdb.json')
     sm = SessionManager('./tempdb.json')
     assert sm is not None
 
@@ -28,7 +29,8 @@ def test_new_user():
 
 
 def test_log_in():
-    os.remove('./tempdb.json')
+    if os.path.exists('./tempdb.json'):
+        os.remove('./tempdb.json')
     sm = SessionManager('./tempdb.json')
     assert sm is not None
 
@@ -59,7 +61,8 @@ def test_log_in():
 
 
 def test_privilages():
-    os.remove('./tempdb.json')
+    if os.path.exists('./tempdb.json'):
+        os.remove('./tempdb.json')
     sm = SessionManager('./tempdb.json')
     assert sm is not None
 
