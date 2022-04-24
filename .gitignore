@@ -1,2 +1,4 @@
 enc.txt
 tempdb.json
+*.pyc
+enc.key

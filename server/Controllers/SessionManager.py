@@ -1,16 +1,15 @@
-from collections import UserList
-from hashlib import new
 from tinydb import TinyDB, Query
 from uuid import uuid4
 from cryptography.fernet import Fernet
 from server.Exceptions.AuthenticationException import AuthenticationException
 import os
 
-if os.path.exists('./enc.txt'):
-    with open('./enc.txt', 'rb') as enc:
+KEY_PATH = './enc.key'
+if os.path.exists(KEY_PATH):
+    with open(KEY_PATH, 'rb') as enc:
         key = enc.read()
 else:
-    with open('./enc.txt', 'wb') as enc:
+    with open(KEY_PATH, 'wb') as enc:
         key = Fernet.generate_key()
         enc.write(key)
 
@@ -29,6 +28,13 @@ UNVERIFIED = 1
 
 WRONG_PASSWORD_MESSAGE = "Wrong password"
 WRONG_USER_NAME_MESSAGE = "No account with provided username"
+ACCOUNT_EXISTS_MESSAGE = "Account already exists"
+
+EMAIL_KEY = 'email'
+TOKEN_KEY = 'token'
+USER_NAME_KEY = 'user_name'
+PRIVILAGE_KEY = 'privilage'
+PASSWORD_HASH_KEY = 'password_hash'
 
 class SessionManager:
 
@@ -63,43 +69,44 @@ class SessionManager:
         num_users = len(result)
 
         if num_users > 0:
-            raise AuthenticationException("Account already exists")
+            raise AuthenticationException(ACCOUNT_EXISTS_MESSAGE)
 
         new_entry = {
-            'token': self.make_token(), 
-            'user_name': user_name,
-            'password_hash': self.encrypted_password(password_plain).decode(),
-            'privilage': priv,
-            'email': email
+            TOKEN_KEY: self.make_token(), 
+            USER_NAME_KEY: user_name,
+            PASSWORD_HASH_KEY: self.encrypted_password(password_plain).decode(),
+            PRIVILAGE_KEY: priv,
+            EMAIL_KEY: email
             }
 
         self.db.insert(new_entry)
-        return new_entry['token']
+        return new_entry[TOKEN_KEY]
         
     def get_token(self, user_name, password_plain):
         authed_token = Query()
         result = self.db.search(authed_token.user_name == user_name)
 
-        if not result:
-            raise AuthenticationException(WRONG_USER_NAME_MESSAGE)
-        else: 
-            hashed_password = result[0]['password_hash'].encode()
+        if result:
+            hashed_password = result[0][PASSWORD_HASH_KEY].encode()
             decrypted_password = self.decrypted_password(hashed_password).decode()
 
             if decrypted_password == password_plain:
-                return result[0]['token']
+                return result[0][TOKEN_KEY]
             else:
                 raise AuthenticationException(WRONG_PASSWORD_MESSAGE)
+
+        else: 
+            raise AuthenticationException(WRONG_USER_NAME_MESSAGE)
 
     def _check_privilage_level(self, token, privilage):
         authed_token = Query()
         result = self.db.search(authed_token.token == token)
         
-        if not result:
-            return False
-        else: 
-            users_priviage = result[0]['privilage']
+        if result:
+            users_priviage = result[0][PRIVILAGE_KEY]
             return users_priviage >= privilage
+        
+        return False
 
     def owner_privilage(self, token):
         return self._check_privilage_level(token, OWNER)
@@ -120,4 +127,4 @@ class SessionManager:
         if not result:
             return None
         else: 
-            return result[0]['email']
+            return result[0][EMAIL_KEY]
