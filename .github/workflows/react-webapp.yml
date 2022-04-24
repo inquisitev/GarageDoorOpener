@@ -10,18 +10,9 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.3.0
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          working-directory: ./react-webapp
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          working-directory: ./react-webapp
-          cmd: build # will run `yarn build` command
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          working-directory: ./react-webapp
-          cmd: test # wi
-      
+          node-version: '14'
+      - run: "cd react-webapp && yarn install && yarn test"      
       
