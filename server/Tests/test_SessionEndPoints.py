@@ -3,6 +3,7 @@ import json, os
 
 def test_new_user_endpoint_good():
 
+  # good response with a valid new user
   if os.path.exists('./tempdb.json'):
       os.remove('./tempdb.json')
   app = make_app('./tempdb.json').test_client()
@@ -15,4 +16,32 @@ def test_new_user_endpoint_good():
   js = json.loads(res.data)
   assert res.status_code == 200
   assert 'token' in js
+
+def test_new_euser_aleady_exists():
+
+  #bad response when a user already exists
+  if os.path.exists('./tempdb.json'):
+      os.remove('./tempdb.json')
+  app = make_app('./tempdb.json').test_client()
+  res = app.post('/login', data=json.dumps({
+    'user': 'test',
+    'email': 'test@test.com',
+    'password_plain': 'testpassword12345678',
+    }), 
+    content_type='application/json')
+  js = json.loads(res.data)
+  assert res.status_code == 200
+  assert 'token' in js
+
+  res = app.post('/login', data=json.dumps({
+    'user': 'test',
+    'email': 'test@test.com',
+    'password_plain': 'testpassword12345678',
+    }), 
+    content_type='application/json')
+  js = json.loads(res.data)
+  assert res.status_code == 409
+  assert 'token' not in js
+  assert 'error' in js
+  assert js['error'] == "Account already exists"
   
