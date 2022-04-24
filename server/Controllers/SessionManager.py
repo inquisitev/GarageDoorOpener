@@ -54,6 +54,16 @@ class SessionManager:
 
 
     def new_user(self, user_name, email, password_plain):
+        """
+        Add a new user. 
+
+        If its the first user, make them the owner.
+        otherwise they are unverified until promoted. 
+
+        Also check that a user exists with the email.
+
+        If all goes well, return the new token. 
+        """
         user_list = Query()
 
         result = self.db.search(user_list.privilage == OWNER)
@@ -83,6 +93,9 @@ class SessionManager:
         return new_entry[TOKEN_KEY]
         
     def get_token(self, user_name, password_plain):
+        """
+        Log a user in. Authentication error on either wrong user name or wrong password.
+        """
         authed_token = Query()
         result = self.db.search(authed_token.user_name == user_name)
 
@@ -99,6 +112,10 @@ class SessionManager:
             raise AuthenticationException(WRONG_USER_NAME_MESSAGE)
 
     def _check_privilage_level(self, token, privilage):
+        """
+        Check a tokens privilage level, true if the owners privilage
+        is atleast the checked privilage.
+        """
         authed_token = Query()
         result = self.db.search(authed_token.token == token)
         
@@ -109,18 +126,36 @@ class SessionManager:
         return False
 
     def owner_privilage(self, token):
+        """
+        Check that a token has been granted owner level privilage. 
+        Owner includes privilages of resident, visitor and unverified. 
+        """
         return self._check_privilage_level(token, OWNER)
 
     def resident_privilage(self, token):
+        """
+        Check that a token has been granted resident level privilage. 
+        Resident includes privilages of visitor and unverified. 
+        """
         return self._check_privilage_level(token, RESIDENT)
 
     def visitor_privilage(self, token):
+        """
+        Check that a token has been granted visitor level privilage. 
+        Visitor includes privilages of unverified. 
+        """
         return self._check_privilage_level(token, VISITOR)
 
     def unverified_privilage(self, token):
+        """
+        Basically no privilages until promoted.
+        """
         return self._check_privilage_level(token, UNVERIFIED)
 
     def get_email(self, token):
+        """
+        Get a users email by the token.
+        """
         authed_token = Query()
         result = self.db.search(authed_token.token == token)
 
