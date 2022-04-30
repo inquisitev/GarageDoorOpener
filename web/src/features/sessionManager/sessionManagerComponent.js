@@ -16,7 +16,7 @@ export const SessionManagerComponent = (props) => {
         content = <div>
             <p>Username: {props.username}</p>
             <p>serverAddress: {props.serverAddress}</p>
-            <p></p>
+            <button onClick={props.logOut}>Log Out</button>
         </div>
         
     }

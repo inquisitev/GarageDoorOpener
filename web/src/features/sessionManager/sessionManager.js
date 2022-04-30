@@ -25,5 +25,6 @@ export const SessionManager = () => {
         username = {username}
         serverAddress = {serverAddress}
         logIn={(username, password, server)=>{dispatch(logIn(username, password, server))}}
+        logOut={() => {dispatch(logOut())}}
      />
   }

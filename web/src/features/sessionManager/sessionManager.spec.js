@@ -1,5 +1,6 @@
 import sessionManagerReducer, {
     logIn,
+    logOut,
     signUp, makeInitialState
 } from './sessionManagerSlice'
 
@@ -62,6 +63,26 @@ describe('session manager reducer', () => {
 
 
         expect(sessionManagerReducer(initialState, {type: logIn.fulfilled, payload: response})).toEqual(expectedState);
+    });
+
+    it('should show log out when requested', () => {
+
+        const initialState = makeInitialState()
+        const expectedState = makeInitialState()
+
+        initialState.logInState.loggedIn = true
+        initialState.user.token = "testtoken"
+        initialState.logInState.loggingIn = false
+        initialState.user.username = "tempusername"
+
+        expectedState.user.token = ""
+        expectedState.user.username = ""
+        expectedState.logInState.loggedIn = false
+        expectedState.logInState.loggingIn = false
+        
+
+
+        expect(sessionManagerReducer(initialState, {type: logOut,})).toEqual(expectedState);
     });
 
     it('should not show logged in when failed', () => {

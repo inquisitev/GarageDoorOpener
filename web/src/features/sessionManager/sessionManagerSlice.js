@@ -55,7 +55,12 @@ export const sessionManagerSlice = createSlice({
             state.user.username = action.payload.username
             state.serverAddress = action.payload.serverAddress
         },
-        logOut: (state) => {},
+        logOut: (state) => {
+            state.user.username = ""
+            state.serverAddress = ""
+            state.user.token = ""
+            state.logInState.loggedIn = false
+        },
         signUp: (state) => {},
     },
     extraReducers: (builder) => {
