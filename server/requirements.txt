@@ -1,6 +1,7 @@
 tinydb
 cryptography
 flask
+flask-cors
 pytest
 requests
 pifacedigitalio
