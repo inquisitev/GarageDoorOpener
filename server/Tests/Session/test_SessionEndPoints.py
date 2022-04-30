@@ -6,7 +6,7 @@ def test_new_user_endpoint_good():
   # good response with a valid new user
   if os.path.exists('./tempdb.json'):
       os.remove('./tempdb.json')
-  app,cors = make_app('./tempdb.json').test_client()
+  app = make_app('./tempdb.json')[0].test_client()
   res = app.post('/signup', data=json.dumps({
     'user': 'test',
     'email': 'test@test.com',
@@ -22,7 +22,7 @@ def test_new_euser_aleady_exists():
   #bad response when a user already exists
   if os.path.exists('./tempdb.json'):
       os.remove('./tempdb.json')
-  app,cors = make_app('./tempdb.json').test_client()
+  app = make_app('./tempdb.json')[0].test_client()
   res = app.post('/signup', data=json.dumps({
     'user': 'test',
     'email': 'test@test.com',
@@ -51,7 +51,7 @@ def test_can_log_in():
   # good response logging in a user that exists with correct creds
   if os.path.exists('./tempdb.json'):
       os.remove('./tempdb.json')
-  app,cors = make_app('./tempdb.json').test_client()
+  app = make_app('./tempdb.json')[0].test_client()
   res = app.post('/signup', data=json.dumps({
     'user': 'test',
     'email': 'test@test.com',
@@ -62,7 +62,7 @@ def test_can_log_in():
   assert res.status_code == 200
   assert 'token' in js
 
-  app = make_app('./tempdb.json').test_client()
+  app = make_app('./tempdb.json')[0].test_client()
   res = app.post('/login', data=json.dumps({
     'user': 'test',
     'password_plain': 'testpassword12345678',
@@ -77,7 +77,7 @@ def test_good_creds_only():
   # good response logging in a user that exists with correct creds
   if os.path.exists('./tempdb.json'):
       os.remove('./tempdb.json')
-  app,cors = make_app('./tempdb.json').test_client()
+  app = make_app('./tempdb.json')[0].test_client()
   res = app.post('/signup', data=json.dumps({
     'user': 'test',
     'email': 'test@test.com',
@@ -88,7 +88,7 @@ def test_good_creds_only():
   assert res.status_code == 200
   assert 'token' in js
 
-  app,cors = make_app('./tempdb.json').test_client()
+  app = make_app('./tempdb.json')[0].test_client()
   res = app.post('/login', data=json.dumps({
     'user': 'test',
     'password_plain': 'testpassword12345678butitswrong',
@@ -102,7 +102,7 @@ def test_good_creds_only():
 
 
 
-  app,cors = make_app('./tempdb.json').test_client()
+  app = make_app('./tempdb.json')[0].test_client()
   res = app.post('/login', data=json.dumps({
     'user': 'testwrongname',
     'password_plain': 'testpassword12345678',
