@@ -61,7 +61,7 @@ export const sessionManagerSlice = createSlice({
     extraReducers: (builder) => {
         builder
           .addCase(logIn.pending, (state) => {
-            state.user.loggingIn = true
+            state.logInState.loggingIn = true
           })
           .addCase(logIn.fulfilled, (state, action) => {
               if (action.payload.status == 200){
