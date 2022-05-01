@@ -20,7 +20,7 @@ let logInForm = props => {
       {props.logInFailed && <p>Log in failed</p>}
 
       <Divider/>
-      <Button type="submit">Submit</Button>
+      <button type="submit">Submit</button>
     </form>
   )
 }
