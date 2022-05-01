@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { DoorControls } from './features/doorControls/doorControls';
 import { SessionManager } from './features/sessionManager/sessionManager';
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <SessionManager/>
+        <DoorControls/>
         
         
         

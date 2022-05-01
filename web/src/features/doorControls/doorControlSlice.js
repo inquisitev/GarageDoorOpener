@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {selectServerAddress} from './../sessionManager/sessionManagerSlice.js'
+import {selectServerAddress, selectToken} from '../sessionManager/sessionManagerSlice.js'
 import axios from 'axios';
 
 export const makeInitialState = () => {
@@ -21,16 +21,16 @@ const initialState = makeInitialState()
 
 export const triggerDoor = createAsyncThunk(
     "doorControls/triggerDoor",
-    async ({dispatch, getState}) => {
+    async (args, {dispatch, getState}) => {
         const state = getState()
-        const serverAddress = selectServerAddress(state)
-        dispatch(sessionManagerSlice.actions.triggerDoorRequested())
+        const serverAddress = selectServerAddress(state) + '/door_button'
+        const token = selectToken(state)
+    //    dispatch(doorControlSlice.actions.triggerDoorRequested())
         return await axios({
             method: 'post',
-            url: formValues.serverAddress + '/door_button',
+            url: serverAddress,
             data: {
-              user: formValues.username,
-              password_plain: formValues.password
+                token: token
             }
           });
     }

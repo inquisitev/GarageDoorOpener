@@ -1,8 +1,10 @@
 import { Button } from "antd"
 
-export default  doorControls = (props) => {
+const DoorControlsComponent = (props) => {
     return <div>
         <p>DoorState: {props.doorState}</p>
-        <Button onClick={props.doorTrigger}/>
+        <button onClick={props.doorTrigger}>Trigger Door</button>
     </div>
 }
+
+export default DoorControlsComponent

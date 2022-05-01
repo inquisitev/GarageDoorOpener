@@ -1,14 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import DoorControlsComponent from './doorControlsComponent';
+import { triggerDoor } from './doorControlSlice';
 
-export const SessionManager = () => {
+export const DoorControls = () => {
 
-
-    //const username = useSelector(selectUsername)
-    //const serverAddress = useSelector(selectServerAddress)
 
     const dispatch = useDispatch()
 
-     return <DoorControlsComponent/>
+     return <DoorControlsComponent doorTrigger={()=>{dispatch(triggerDoor())}}/>
   }

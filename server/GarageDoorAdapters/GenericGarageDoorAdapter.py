@@ -6,7 +6,8 @@ Garage door interface kept simple.
 class GenericGarageDoorAdapter:
 
     def __init__(self):
-        pass
+        self.door_down = [3,4,5]
+        self.door_up = [0,1,2]
 
     def garage_door_button(self):
         '''
@@ -39,10 +40,10 @@ class GenericGarageDoorAdapter:
         return states
 
     def _digital_read(self, pin: int) -> bool:
-        raise NotImplementedError
+        return True
 
     def _digital_write(self, pin: int, val: bool) -> None:
-        raise NotImplementedError
+        pass
 
     def _init_controller(self):
-        raise NotImplementedError
+        pass
