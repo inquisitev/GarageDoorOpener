@@ -67,18 +67,18 @@ export const sessionManagerSlice = createSlice({
         builder
           .addCase(logIn.pending, (state) => {
             state.logInState.loggingIn = true
+            state.logInState.logInFailed = false
           })
           .addCase(logIn.fulfilled, (state, action) => {
-              if (action.payload.status == 200){
-                state.logInState.loggedIn = true
+            if (action.payload.status == 200){
+              state.logInState.loggedIn = true
+              state.logInState.loggingIn = false
+              state.user.token = action.payload.data.token
+            }
+        }).addCase(logIn.rejected, (state, action) => {
+                state.logInState.logInFailed = true
                 state.logInState.loggingIn = false
-                state.user.token = action.payload.data.token
-              }
-              else{
-                  state.logInState.logInFailed = true
-                  state.logInState.loggingIn = false
-              }
-          })
+        })
           .addCase(signUp.pending, (state) => {
             state.createAccountState.creatingAccount = true
           })

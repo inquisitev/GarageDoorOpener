@@ -65,6 +65,34 @@ describe('session manager reducer', () => {
         expect(sessionManagerReducer(initialState, {type: logIn.fulfilled, payload: response})).toEqual(expectedState);
     });
 
+    it('should not show failed after logging out of successful after failing', () => {
+
+        const initialState = makeInitialState()
+        const expectedState = makeInitialState()
+
+        initialState.user.token = ""
+        initialState.logInState.loggedIn = false
+        initialState.logInState.loggingIn = false
+        initialState.logInState.logInFailed = true
+
+        expectedState.logInState.loggedIn = false
+        expectedState.logInState.loggingIn = true
+        expectedState.logInState.logInFailed = false
+
+        
+
+        const response = {
+            "data": {
+                "token": "testtoken"
+            },
+            "status": 200,
+            "statusText": "OK",
+        }
+
+
+        expect(sessionManagerReducer(initialState, {type: logIn.pending, payload: response})).toEqual(expectedState);
+    });
+
     it('should show log out when requested', () => {
 
         const initialState = makeInitialState()
@@ -111,6 +139,6 @@ describe('session manager reducer', () => {
         }
 
 
-        expect(sessionManagerReducer(initialState, {type: logIn.fulfilled, payload: response})).toEqual(expectedState);
+        expect(sessionManagerReducer(initialState, {type: logIn.rejected})).toEqual(expectedState);
     });
 });

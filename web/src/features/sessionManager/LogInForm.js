@@ -1,12 +1,12 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-
+import { Button, Divider } from 'antd';
 let logInForm = props => {
   const { handleSubmit } = props
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username" >Username</label>
         <Field name="username" component="input" type="text" />
       </div>
       <div>
@@ -17,7 +17,10 @@ let logInForm = props => {
         <label htmlFor="serverAddress">serverAddress</label>
         <Field name="serverAddress" component="input" type="text" />
       </div>
-      <button type="submit">Submit</button>
+      {props.logInFailed && <p>Log in failed</p>}
+
+      <Divider/>
+      <Button type="submit">Submit</Button>
     </form>
   )
 }
