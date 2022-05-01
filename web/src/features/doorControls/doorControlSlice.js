@@ -25,7 +25,6 @@ export const triggerDoor = createAsyncThunk(
         const state = getState()
         const serverAddress = selectServerAddress(state) + '/door_button'
         const token = selectToken(state)
-    //    dispatch(doorControlSlice.actions.triggerDoorRequested())
         return await axios({
             method: 'post',
             url: serverAddress,
@@ -36,27 +35,69 @@ export const triggerDoor = createAsyncThunk(
     }
 )
 
+export const updateDoorState = createAsyncThunk(
+    "doorControls/updateDoorState",
+    async (args, {dispatch, getState}) => {
+        const state = getState()
+        const serverAddress = selectServerAddress(state) + '/door_state'
+        const token = selectToken(state)
+        return await axios({
+            method: 'post',
+            url: serverAddress,
+            data: {
+                token: token
+            }
+          });
+    }
+)
+
+
 export const doorControlSlice = createSlice({
     name: 'doorControls',
     initialState,
     reducers: {
-        doorTriggerRequest: (state, action) => {
-        }
+        
     },
     extraReducers: (builder) => {
         builder
-            .addCase(triggerDoor.pending, (state) => {
-                
-            })
-            .addCase(triggerDoor.fulfilled, (state, action) => {
-
-            })
-            .addCase(triggerDoor.rejected, (state, action) => {
-
-            });
+        .addCase(triggerDoor.pending, (state) => {
+            state.doorTriggerState.triggerPending = true
+            state.doorTriggerState.triggerFailed = false
+            state.doorTriggerState.triggerSuccess = false
+        })
+        .addCase(triggerDoor.fulfilled, (state, action) => {
+            state.doorTriggerState.triggerPending = false
+            state.doorTriggerState.triggerFailed = false
+            state.doorTriggerState.triggerSuccess = true
+        })
+        .addCase(triggerDoor.rejected, (state, action) => {
+            state.doorTriggerState.triggerPending = false
+            state.doorTriggerState.triggerFailed = true
+            state.doorTriggerState.triggerSuccess = false
+        })
+        .addCase(updateDoorState.pending, (state) => {
+            state.doorState.updatePending = true
+            state.doorState.updateFailed = false
+            state.doorState.currentState = ""
+        })
+        .addCase(updateDoorState.fulfilled, (state, action) => {
+            state.doorState.updatePending = false
+            state.doorState.updateFailed = false
+            state.doorState.currentState = action.payload.data.state
+        })
+        .addCase(updateDoorState.rejected, (state, action) => {
+            state.doorState.updatePending = false
+            state.doorState.updateFailed = true
+            state.doorState.currentState = ""
+        });
       },
 });
 
-
+export const selectCurrentDoorState = (state) => state.doorControls.doorState.currentState
+export const selectCurrentDoorStateUpdatePending = (state) => state.doorControls.doorState.updatePending
+export const selectCurrentDoorStateUpdateFailed = (state) => state.doorControls.updateFailed
+export const selectDoorTriggerPending = (state) => state.doorControls.doorTriggerState.triggerPending
+export const selectDoorTriggerSuccess = (state) => state.doorControls.doorTriggerState.triggerSuccess
+export const selectDoorTriggerFailure = (state) => state.doorControls.doorTriggerState.triggerFailed
 
 export default doorControlSlice.reducer;
