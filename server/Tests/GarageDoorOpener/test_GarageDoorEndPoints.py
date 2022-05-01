@@ -7,7 +7,7 @@ def make_test_app():
       os.remove('./tempdb.json')
 
   opener = StubbedOpener([0, 1, 2],[3, 4, 5])
-  app = make_app('./tempdb.json', opener).test_client()
+  app = make_app('./tempdb.json', opener)[0].test_client()
   return app
 
 def make_a_user(app, creds):
