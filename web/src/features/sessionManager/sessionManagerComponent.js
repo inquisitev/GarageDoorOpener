@@ -1,7 +1,6 @@
 import React from 'react';
-import {Button, Card, Descriptions, Divider} from 'antd';
+import {Button, Card, Descriptions} from 'antd';
 import LogInForm from './LogInForm';
-import { selectServerAddress } from './sessionManagerSlice';
 
  
 export const SessionManagerComponent = (props) => {
@@ -14,20 +13,13 @@ export const SessionManagerComponent = (props) => {
         }}/>
     }
     else{
-        content = /*<div>
-            <p>Username: {props.username}</p>
-            <p>serverAddress: {props.serverAddress}</p>
-            <Divider/>
+        content = (<div>
+            <Descriptions column={1}>
+                <Descriptions.Item label="User Name">{props.username}</Descriptions.Item>
+                <Descriptions.Item label="Server Address">{props.serverAddress}</Descriptions.Item>
+            </Descriptions>
             <Button onClick={props.logOut}>Log Out</Button>
-        </div>*/
-        <div>
-        <Descriptions column={1}>
-        <Descriptions.Item label="User Name">{props.username}</Descriptions.Item>
-        <Descriptions.Item label="Server Address">{props.serverAddress}</Descriptions.Item>
-      </Descriptions>
-
-      <Button onClick={props.logOut}>Log Out</Button>
-      </div>
+      </div>)
         
     }
 

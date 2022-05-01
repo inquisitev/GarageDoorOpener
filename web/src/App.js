@@ -1,9 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
 import { SessionManager } from './features/sessionManager/sessionManager';
-import { SessionManagerComponent } from './features/sessionManager/sessionManagerComponent';
 
 function App() {
   return (

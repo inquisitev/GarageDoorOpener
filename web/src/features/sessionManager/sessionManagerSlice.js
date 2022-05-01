@@ -70,7 +70,7 @@ export const sessionManagerSlice = createSlice({
             state.logInState.logInFailed = false
           })
           .addCase(logIn.fulfilled, (state, action) => {
-            if (action.payload.status == 200){
+            if (action.payload.status === 200){
               state.logInState.loggedIn = true
               state.logInState.loggingIn = false
               state.user.token = action.payload.data.token

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Divider } from 'antd';
+import { Divider } from 'antd';
 let logInForm = props => {
   const { handleSubmit } = props
   return (
