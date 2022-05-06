@@ -6,3 +6,4 @@ pytest
 requests
 pifacedigitalio
 pifacecommon
+gunicorn

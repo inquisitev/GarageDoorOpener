@@ -6,7 +6,6 @@ services:
 #    volumes:
 #      - /sys:/sys
     
-    command: ["python", '-m', 'server']
     environment:
       - FLASK_ENV=development
       - FLASK_APP=server
