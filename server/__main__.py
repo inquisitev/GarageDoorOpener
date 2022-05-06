@@ -8,4 +8,5 @@ else:
   from server.GarageDoorAdapters.GenericGarageDoorAdapter import GenericGarageDoorAdapter
   app,cors = make_app('./data/db.json', GenericGarageDoorAdapter())
   
-app.run('127.0.0.1', 8080)
+
+app.run('0.0.0.0', 3000)
