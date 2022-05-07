@@ -8,12 +8,12 @@ services:
     networks:
       - web_api
 
-  #web:
-  #  build: ./web
-  #  ports:
-  #    - "8080:3000"
-  #  networks:
-  #    - web_api
+  web:
+    build: ./web
+    ports:
+      - "80:80"
+    networks:
+      - web_api
 
 networks:
   web_api:
