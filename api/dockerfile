@@ -1,0 +1,16 @@
+FROM python:3.9
+
+RUN mkdir -p /usr/src/api/server
+WORKDIR /usr/src/api/server
+
+COPY requirements.txt /usr/src/api/server
+RUN pip install -r requirements.txt
+
+RUN ls
+COPY . /usr/src/api/server
+WORKDIR /usr/src/api/server
+RUN mkdir /usr/src/api/server/data
+
+
+EXPOSE 5000
+ENTRYPOINT ["sh", "/usr/src/api/server/start_gunicorn.sh"]

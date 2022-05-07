@@ -2,12 +2,8 @@ version: '3'
 
 services:
   api:
-    build: ./server
+    build: ./api
 #    volumes:
 #      - /sys:/sys
-    
-    environment:
-      - FLASK_ENV=development
-      - FLASK_APP=server
     ports:
-      - "8080:3000"
+      - "8080:80"
