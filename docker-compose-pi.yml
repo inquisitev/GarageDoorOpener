@@ -3,6 +3,8 @@ version: '3'
 services:
   api:
     build: ./api
+    volumes:
+      - /sys:/sys
     networks:
       - web_api
 
