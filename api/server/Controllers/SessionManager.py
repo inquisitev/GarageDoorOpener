@@ -1,7 +1,6 @@
 import json
 from tinydb import TinyDB, Query
 from uuid import uuid4
-from cryptography.fernet import Fernet
 from server.Exceptions.AuthenticationException import AuthenticationException
 import os, hashlib, binascii
 
