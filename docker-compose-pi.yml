@@ -3,17 +3,15 @@ version: '3'
 services:
   api:
     build: ./api
-    volumes:
-      - /sys:/sys
     networks:
       - web_api
 
-  web:
-    build: ./web
-    ports:
-      - "80:80"
-    networks:
-      - web_api
+  #web:
+  #  build: ./web
+  #  ports:
+  #    - "80:80"
+  #  networks:
+  #    - web_api
 
 
 networks:

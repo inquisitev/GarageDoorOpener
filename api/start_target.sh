@@ -1,5 +1,6 @@
 cd api
-python3.7 -m venv garageDoorVenv
+python -m venv garageDoorVenv
 source ./garageDoorVenv/bin/activate
-python3.7 -m pip install -r requirements.txt
-python3.7 -m server
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m server

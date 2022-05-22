@@ -1,0 +1,16 @@
+
+FROM balenalib/raspberrypi3-python
+#RUN apt update
+#RUN apt-get install software-properties-common
+#
+#RUN add-apt-repository main
+#RUN add-apt-repository universe
+#RUN add-apt-repository restricted
+#RUN add-apt-repository multiverse 
+#
+
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
+
+COPY . /api
+#WORKDIR /api
+#RUN python -m pip install -r requirements.txt
