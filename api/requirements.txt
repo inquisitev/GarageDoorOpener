@@ -1,9 +1,8 @@
 tinydb
-cryptography==3.1.1
 flask
 flask-cors
 pytest
 requests
-pifacecommon
 pifacedigitalio
+pifacecommon
 gunicorn
