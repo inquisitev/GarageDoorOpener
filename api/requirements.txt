@@ -1,5 +1,4 @@
 tinydb
-cryptography
 flask
 flask-cors
 pytest

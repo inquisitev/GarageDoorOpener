@@ -1,18 +1,9 @@
+import json
 from tinydb import TinyDB, Query
 from uuid import uuid4
 from cryptography.fernet import Fernet
 from server.Exceptions.AuthenticationException import AuthenticationException
-import os
-
-KEY_PATH = './enc.key'
-if os.path.exists(KEY_PATH):
-    with open(KEY_PATH, 'rb') as enc:
-        key = enc.read()
-else:
-    with open(KEY_PATH, 'wb') as enc:
-        key = Fernet.generate_key()
-        enc.write(key)
-
+import os, hashlib, binascii
 
     
 """
@@ -35,18 +26,23 @@ TOKEN_KEY = 'token'
 USER_NAME_KEY = 'user_name'
 PRIVILAGE_KEY = 'privilage'
 PASSWORD_HASH_KEY = 'password_hash'
+PASSWORD_HASH_SALT_KEY = 'password_salt'
 
 class SessionManager:
 
     def __init__(self, db_path):
         self.db = TinyDB(db_path)
 
-    def _encrypted_password(self, password):
-        return Fernet(key).encrypt(password.encode())
+    def _encrypted_password(self, password, salt = None):
+        if salt is None:
+            salt = os.urandom(32)
+        key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+        return salt, key
 
-    def _decrypted_password(self, encrypted_password):
-        enc = Fernet(key).decrypt(encrypted_password)
-        return enc
+    def _authenticate(self, salt, key, attempt):
+
+        hashed_attempt = self._encrypted_password(attempt, salt)
+        return hashed_attempt[1] == key
 
     def _make_token(self):
         token = uuid4().hex
@@ -81,10 +77,13 @@ class SessionManager:
         if num_users > 0:
             raise AuthenticationException(ACCOUNT_EXISTS_MESSAGE)
 
+        salt,key = self._encrypted_password(password_plain)
+
         new_entry = {
             TOKEN_KEY: self._make_token(), 
             USER_NAME_KEY: user_name,
-            PASSWORD_HASH_KEY: self._encrypted_password(password_plain).decode(),
+            PASSWORD_HASH_SALT_KEY: binascii.hexlify(salt).decode(),
+            PASSWORD_HASH_KEY: binascii.hexlify(key).decode(),
             PRIVILAGE_KEY: priv,
             EMAIL_KEY: email
             }
@@ -100,10 +99,10 @@ class SessionManager:
         result = self.db.search(authed_token.user_name == user_name)
 
         if result:
-            hashed_password = result[0][PASSWORD_HASH_KEY].encode()
-            decrypted_password = self._decrypted_password(hashed_password).decode()
+            hashed_password = binascii.unhexlify(result[0][PASSWORD_HASH_KEY])
+            salt = binascii.unhexlify(result[0][PASSWORD_HASH_SALT_KEY])
 
-            if decrypted_password == password_plain:
+            if self._authenticate(salt, hashed_password, password_plain):
                 return result[0][TOKEN_KEY]
             else:
                 raise AuthenticationException(WRONG_PASSWORD_MESSAGE)
