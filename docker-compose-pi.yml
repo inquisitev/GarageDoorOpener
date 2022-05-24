@@ -3,10 +3,19 @@ version: '3'
 services:
   api:
     build: ./api
-    volumes:
-      - /sys:/sys
+    environment:
+      - DOOR_ADAPTER=piface
     networks:
       - web_api
+    devices:
+      - "/dev/mem:/dev/mem"
+    ports:
+      - "8081:8081"
+    
+    privileged: true
+    volumes:
+      - apiData:/api/data
+
 
   web:
     build: ./web
@@ -14,6 +23,9 @@ services:
       - "80:80"
     networks:
       - web_api
+
+volumes:
+  apiData:
 
 networks:
   web_api:

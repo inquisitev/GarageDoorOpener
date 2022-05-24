@@ -30,7 +30,7 @@ PASSWORD_HASH_SALT_KEY = 'password_salt'
 class SessionManager:
 
     def __init__(self, db_path):
-        self.db = TinyDB(db_path)
+        self.db = TinyDB(db_path, create_dirs=True)
 
     def _encrypted_password(self, password, salt = None):
         if salt is None:

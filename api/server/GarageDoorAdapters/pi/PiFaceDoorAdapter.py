@@ -1,9 +1,13 @@
 from server.GarageDoorAdapters.GenericGarageDoorAdapter import GenericGarageDoorAdapter
-import json 
+import json,time
 import pifacedigitalio as piface
 
+pifacedigital = piface.PiFaceDigital()
+pifacedigital.leds[2].turn_on()
+        
 class PiFaceDoorAdapter(GenericGarageDoorAdapter):
-    def _init_controller(self):
+    def __init__(self):
+        
         piface.init()        
 
         self.door_up = []
@@ -17,4 +21,4 @@ class PiFaceDoorAdapter(GenericGarageDoorAdapter):
         return bool(piface.digital_read(pin))
 
     def _digital_write(self, pin: int, val: bool) -> None:
-        raise piface.digital_write(pin, int(val))
+        return piface.digital_write(pin, int(val))
