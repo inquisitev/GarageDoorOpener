@@ -10,10 +10,9 @@ if not os.path.exists(DB_FOLDER):
   if os.name == 'posix':
     os.chmod(DB_FOLDER,0o777)
 
-if os.name == 'posix':
+if os.environ.get("DOOR_ADAPTER") == 'piface':
     from server.GarageDoorAdapters.pi.PiFaceDoorAdapter import PiFaceDoorAdapter
     api,cors = make_app(DB_PATH, PiFaceDoorAdapter())
-    api.run('0.0.0.0',8081)
 else:
   from server.GarageDoorAdapters.GenericGarageDoorAdapter import GenericGarageDoorAdapter
   api,cors = make_app(DB_PATH, GenericGarageDoorAdapter())

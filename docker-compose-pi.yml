@@ -3,6 +3,8 @@ version: '3'
 services:
   api:
     build: ./api
+    environment:
+      - DOOR_ADAPTER=piface
     networks:
       - web_api
     devices:
