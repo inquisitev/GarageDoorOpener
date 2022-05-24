@@ -1,4 +1,4 @@
 {
     "door_open_sensors": [0,1,2],
-    "door_closed_sensors": [3,4,5]
+    "door_closed_sensors": [3,4]
 }

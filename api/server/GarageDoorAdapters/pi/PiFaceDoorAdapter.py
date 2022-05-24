@@ -2,14 +2,12 @@ from server.GarageDoorAdapters.GenericGarageDoorAdapter import GenericGarageDoor
 import json,time
 import pifacedigitalio as piface
 
-pifacedigital = piface.PiFaceDigital()
-pifacedigital.leds[2].turn_on()
+
         
 class PiFaceDoorAdapter(GenericGarageDoorAdapter):
     def __init__(self):
         
         piface.init()        
-
         self.door_up = []
         self.door_down = []
         with open('./config.json', 'r') as config_file:

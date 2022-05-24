@@ -18,7 +18,6 @@ def make_end_points(app, session_manager, door_opener):
         data = json.loads(request.data)
         token = data['token']
         if session_manager.visitor_privilage(token):
-            door_opener.garage_door_button()
             return json.dumps({'state': door_opener.garage_door_state()}), 200
         else:
             return json.dumps({'error': "Invalid Permissions"}),401

@@ -6,7 +6,7 @@ Garage door interface kept simple.
 class GenericGarageDoorAdapter:
 
     def __init__(self):
-        self.door_down = [3,4,5]
+        self.door_down = [3,4]
         self.door_up = [0,1,2]
 
     def garage_door_button(self):
