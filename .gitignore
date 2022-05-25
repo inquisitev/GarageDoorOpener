@@ -4,3 +4,4 @@ tempdb.json
 enc.key
 /garage
 */node_modules
+data/*

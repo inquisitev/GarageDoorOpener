@@ -1,3 +1,4 @@
+
 version: '3'
 
 services:
@@ -7,13 +8,31 @@ services:
       dockerfile: dockerfile-dev
     networks:
       - web_api
-
+    volumes:
+      - apiData:/api/data
   web:
     build: ./web
     ports:
       - "80:80"
     networks:
       - web_api
+
+    depends_on:
+      - certbot
+      - api
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  apiData:
 
 networks:
   web_api:
