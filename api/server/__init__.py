@@ -17,4 +17,4 @@ else:
   from server.GarageDoorAdapters.GenericGarageDoorAdapter import GenericGarageDoorAdapter
   api,cors = make_app(DB_PATH, GenericGarageDoorAdapter())
 
-    
+ 
