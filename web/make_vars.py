@@ -2,7 +2,8 @@ import os
 
 env_vars = {
     "api_url": os.environ.get("GDO_API_URL"),
-    "api_url2": os.environ.get("GDO_API_URL")
+    "api_url2": os.environ.get("GDO_API_URL"),
+    "api_url3": os.environ.get("GDO_API_URL")
 }
 
 with open('vars.js', 'w+') as vars_file:
