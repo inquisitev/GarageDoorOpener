@@ -5,7 +5,6 @@ services:
     build: 
       context: ./api
       dockerfile: dockerfile-dev
-    command: yarn start
     networks:
       - web_api
     ports:
@@ -22,7 +21,7 @@ services:
     networks:
       - web_api
     volumes:
-      - ./web:/app
+      - ./web:/usr/src/app
 
 networks:
   web_api:
