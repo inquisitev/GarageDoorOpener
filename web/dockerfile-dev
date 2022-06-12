@@ -1,0 +1,9 @@
+
+FROM nikolaik/python-nodejs as build
+
+WORKDIR /usr/src/app
+ADD . /usr/src/app
+RUN yarn --ignore-engines --network-timeout 100000
+
+RUN python make_vars.py
+CMD ["yarn","start"]

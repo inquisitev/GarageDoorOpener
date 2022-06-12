@@ -2,6 +2,7 @@
 FROM node:14.15.0-alpine as build
 WORKDIR /app
 COPY . .
+RUN python3 make_vars.py
 RUN yarn --ignore-engines --network-timeout 100000
 RUN yarn build
 # production environment
