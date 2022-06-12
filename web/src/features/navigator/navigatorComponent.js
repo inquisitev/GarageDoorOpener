@@ -1,13 +1,9 @@
 import React from 'react';
-import {Button, Card, Col, Descriptions, Row, Typography} from 'antd';
+import {Button, Card, Descriptions} from 'antd';
 import LogInForm from './LogInForm';
-import Avatar from 'antd/lib/avatar/avatar';
-import { UserOutlined } from '@ant-design/icons';
-
-const {Text} = Typography
 
  
-export const SessionManagerComponent = (props) => {
+export const NavigatorComponent = (props) => {
 
     let content = <div></div>;
 
@@ -18,14 +14,10 @@ export const SessionManagerComponent = (props) => {
     }
     else{
         content = (<div>
-            <Row>
-                <Col span={8}>
-                    <Avatar icon={<UserOutlined />} />
-                </Col>
-                <Col span={32}>
-                    <Text>{props.username} </Text>
-                </Col>
-            </Row>
+            <Descriptions column={1}>
+                <Descriptions.Item label="User Name">{props.username}</Descriptions.Item>
+                <Descriptions.Item label="Server Address">{props.serverAddress}</Descriptions.Item>
+            </Descriptions>
             <Button onClick={props.logOut}>Log Out</Button>
       </div>)
         
@@ -33,6 +25,7 @@ export const SessionManagerComponent = (props) => {
 
     return (
         <Card 
+        title="Session Manager"
         style={{width: 400}}
         >
             {content}
